@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 import { getAccomplish } from '@/lib/accomplish';
 import { analytics } from '@/lib/analytics';
 import {
@@ -63,6 +64,7 @@ const LITELLM_PROVIDER_PRIORITY = [
 ];
 
 export default function SettingsDialog({ open, onOpenChange, onApiKeySaved }: SettingsDialogProps) {
+  const { t, i18n } = useTranslation();
   const [apiKey, setApiKey] = useState('');
   const [provider, setProvider] = useState<ProviderId>('anthropic');
   const [isSaving, setIsSaving] = useState(false);
@@ -656,13 +658,13 @@ export default function SettingsDialog({ open, onOpenChange, onApiKeySaved }: Se
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
         <DialogHeader>
-          <DialogTitle>Settings</DialogTitle>
+          <DialogTitle>{t('settings.title')}</DialogTitle>
         </DialogHeader>
 
         <div className="space-y-8 mt-4">
           {/* Model Selection Section */}
           <section>
-            <h2 className="mb-4 text-base font-medium text-foreground">Model</h2>
+            <h2 className="mb-4 text-base font-medium text-foreground">{t('settings.model.title')}</h2>
             <div className="rounded-lg border border-border bg-card p-5">
               {/* Tabs */}
               <div className="flex gap-2 mb-5">
@@ -673,7 +675,7 @@ export default function SettingsDialog({ open, onOpenChange, onApiKeySaved }: Se
                       : 'bg-muted text-muted-foreground hover:text-foreground'
                     }`}
                 >
-                  Cloud Providers
+                  {t('settings.model.tabs.cloud')}
                 </button>
                 <button
                   onClick={() => setActiveTab('local')}
@@ -682,7 +684,7 @@ export default function SettingsDialog({ open, onOpenChange, onApiKeySaved }: Se
                       : 'bg-muted text-muted-foreground hover:text-foreground'
                     }`}
                 >
-                  Local Models
+                  {t('settings.model.tabs.local')}
                 </button>
                 <button
                   onClick={() => setActiveTab('proxy')}
@@ -691,14 +693,14 @@ export default function SettingsDialog({ open, onOpenChange, onApiKeySaved }: Se
                       : 'bg-muted text-muted-foreground hover:text-foreground'
                     }`}
                 >
-                  Proxy Platforms
+                  {t('settings.model.tabs.proxy')}
                 </button>
               </div>
 
               {activeTab === 'cloud' && (
                 <>
                   <p className="mb-4 text-sm text-muted-foreground leading-relaxed">
-                    Select a cloud AI model. Requires an API key for the provider.
+                    {t('settings.model.cloud.description')}
                   </p>
                   {loadingModel ? (
                     <div className="h-10 animate-pulse rounded-md bg-muted" />
@@ -709,7 +711,7 @@ export default function SettingsDialog({ open, onOpenChange, onApiKeySaved }: Se
                       onChange={(e) => handleModelChange(e.target.value)}
                       className="w-full rounded-md border border-input bg-background px-3 py-2 text-sm"
                     >
-                      <option value="" disabled>Select a model...</option>
+                      <option value="" disabled>{t('settings.model.cloud.selectModel')}</option>
                       {DEFAULT_PROVIDERS.filter((p) => p.requiresApiKey || p.id === 'bedrock').map((provider) => {
                         const hasApiKey = provider.id === 'bedrock'
                           ? savedKeys.some((k) => k.provider === 'bedrock')
@@ -722,7 +724,7 @@ export default function SettingsDialog({ open, onOpenChange, onApiKeySaved }: Se
                                 value={model.fullId}
                                 disabled={!hasApiKey}
                               >
-                                {model.displayName}{!hasApiKey ? ' (No API key)' : ''}
+                                {model.displayName}{!hasApiKey ? ` (${t('settings.model.cloud.noApiKey')})` : ''}
                               </option>
                             ))}
                           </optgroup>
@@ -735,7 +737,7 @@ export default function SettingsDialog({ open, onOpenChange, onApiKeySaved }: Se
                   )}
                   {selectedModel && selectedModel.provider !== 'ollama' && !savedKeys.some((k) => k.provider === selectedModel.provider) && (
                     <p className="mt-3 text-sm text-warning">
-                      No API key configured for {DEFAULT_PROVIDERS.find((p) => p.id === selectedModel.provider)?.name}. Add one below.
+                      {t('settings.model.cloud.noApiKeyWarning', { provider: DEFAULT_PROVIDERS.find((p) => p.id === selectedModel.provider)?.name })}
                     </p>
                   )}
                 </>
@@ -744,13 +746,13 @@ export default function SettingsDialog({ open, onOpenChange, onApiKeySaved }: Se
               {activeTab === 'local' && (
                 <>
                   <p className="mb-4 text-sm text-muted-foreground leading-relaxed">
-                    Connect to a local Ollama server to use models running on your machine.
+                    {t('settings.model.local.description')}
                   </p>
 
                   {/* Ollama URL Input */}
                   <div className="mb-4">
                     <label className="mb-2 block text-sm font-medium text-foreground">
-                      Ollama Server URL
+                      {t('settings.model.local.serverUrl')}
                     </label>
                     <div className="flex gap-2">
                       <input
@@ -769,7 +771,7 @@ export default function SettingsDialog({ open, onOpenChange, onApiKeySaved }: Se
                         disabled={testingOllama}
                         className="rounded-md bg-muted px-4 py-2 text-sm font-medium hover:bg-muted/80 disabled:opacity-50"
                       >
-                        {testingOllama ? 'Testing...' : 'Test'}
+                        {testingOllama ? t('settings.model.local.testing') : t('settings.model.local.test')}
                       </button>
                     </div>
                   </div>
@@ -780,7 +782,7 @@ export default function SettingsDialog({ open, onOpenChange, onApiKeySaved }: Se
                       <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
                       </svg>
-                      Connected - {ollamaModels.length} model{ollamaModels.length !== 1 ? 's' : ''} available
+                      {t('settings.model.local.connected', { count: ollamaModels.length })}
                     </div>
                   )}
 
@@ -797,7 +799,7 @@ export default function SettingsDialog({ open, onOpenChange, onApiKeySaved }: Se
                   {ollamaConnected && ollamaModels.length > 0 && (
                     <div className="mb-4">
                       <label className="mb-2 block text-sm font-medium text-foreground">
-                        Select Model
+                        {t('settings.model.local.selectModel')}
                       </label>
                       <select
                         value={selectedOllamaModel}
@@ -820,7 +822,7 @@ export default function SettingsDialog({ open, onOpenChange, onApiKeySaved }: Se
                       disabled={savingOllama}
                       className="w-full rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground hover:bg-primary/90 disabled:opacity-50"
                     >
-                      {savingOllama ? 'Saving...' : 'Use This Model'}
+                      {savingOllama ? t('settings.model.local.saving') : t('settings.model.local.useThisModel')}
                     </button>
                   )}
 
@@ -1502,6 +1504,38 @@ export default function SettingsDialog({ open, onOpenChange, onApiKeySaved }: Se
                   </p>
                 </div>
               )}
+            </div>
+          </section>
+
+          {/* Language Section */}
+          <section>
+            <h2 className="mb-4 text-base font-medium text-foreground">{t('settings.language.title')}</h2>
+            <div className="rounded-lg border border-border bg-card p-5">
+              <p className="mb-4 text-sm text-muted-foreground leading-relaxed">
+                {t('settings.language.description')}
+              </p>
+              <div className="grid grid-cols-2 gap-3">
+                <button
+                  onClick={() => i18n.changeLanguage('en')}
+                  className={`rounded-xl border p-4 text-center transition-all duration-200 ${
+                    i18n.language === 'en'
+                      ? 'border-primary bg-muted'
+                      : 'border-border hover:border-ring'
+                  }`}
+                >
+                  <div className="font-medium text-foreground">English</div>
+                </button>
+                <button
+                  onClick={() => i18n.changeLanguage('zh-CN')}
+                  className={`rounded-xl border p-4 text-center transition-all duration-200 ${
+                    i18n.language === 'zh-CN'
+                      ? 'border-primary bg-muted'
+                      : 'border-border hover:border-ring'
+                  }`}
+                >
+                  <div className="font-medium text-foreground">中文（简体）</div>
+                </button>
+              </div>
             </div>
           </section>
 

@@ -1,0 +1,200 @@
+{
+  "home": {
+    "title": "What will you accomplish today?",
+    "subtitle": "Describe a task and let AI handle the rest",
+    "placeholder": "Describe a task and let AI handle the rest",
+    "examples": {
+      "title": "Example Tasks",
+      "calendarPrep": {
+        "title": "Calendar Prep Notes",
+        "description": "Review tomorrow's meetings and draft a prep notes doc",
+        "prompt": "Check my Google Calendar for tomorrow's meetings and draft preparation notes in a new Google Doc."
+      },
+      "inboxCleanup": {
+        "title": "Inbox Promo Cleanup",
+        "description": "Clear promotional emails from the last 24 hours",
+        "prompt": "Go to my Gmail inbox and delete all promotional emails from the last 24 hours."
+      },
+      "competitorPricing": {
+        "title": "Competitor Pricing Deck",
+        "description": "Analyze competitor pricing and draft a slide with recommendations",
+        "prompt": "Pull pricing and features from these 5 competitor sites [list URLs], save to a CSV, analyze our pricing gaps, and draft a recommendation slide in Google Slides for Monday's meeting."
+      },
+      "notionAudit": {
+        "title": "Notion API Audit",
+        "description": "Scan a Notion wiki for old API mentions with direct links",
+        "prompt": "Read through this Notion wiki at [URL] and find all mentions of the old API, listing them with page links."
+      },
+      "stagingVsProd": {
+        "title": "Staging vs Prod Visual Check",
+        "description": "Compare staging and production visuals with screenshots",
+        "prompt": "Compare my staging site at [URL] to production at [URL] and screenshot any visual differences."
+      },
+      "brokenLinks": {
+        "title": "Production Broken Links",
+        "description": "Check my website for broken links",
+        "prompt": "Open [URL], click through every link, and report any 404 errors."
+      },
+      "portfolioMonitoring": {
+        "title": "Portfolio Monitoring",
+        "description": "Watch stock prices, and alert on drops and spikes",
+        "prompt": "Monitor my stock portfolio on [broker site], alert on price drops and spikes."
+      },
+      "jobApplication": {
+        "title": "Job Application Automation",
+        "description": "Filter jobs and submit applications with saved profiles",
+        "prompt": "Find job listings from Indeed for [query], sort by salary, and apply to the top 5 using my profile."
+      },
+      "eventCalendar": {
+        "title": "Event Calendar Builder",
+        "description": "Select top events and add them to the calendar",
+        "prompt": "Scrape event listings from Eventbrite, filter by location, and add top 5 to my calendar."
+      }
+    }
+  },
+  "taskInput": {
+    "placeholder": "Assign a task or ask anything",
+    "selectDirectory": "Select working directory",
+    "clearDirectory": "Clear working directory",
+    "submit": "Submit"
+  },
+  "sidebar": {
+    "newTask": "New Task",
+    "searchTasks": "Search Tasks (⌘K)",
+    "noConversations": "No conversations yet",
+    "settings": "Settings"
+  },
+  "taskLauncher": {
+    "searchPlaceholder": "Search tasks...",
+    "newTask": "New task",
+    "results": "Results",
+    "last7Days": "Last 7 days",
+    "noTasksFound": "No tasks found",
+    "navigate": "Navigate",
+    "select": "Select",
+    "close": "Close"
+  },
+  "execution": {
+    "tools": {
+      "read": "Reading files",
+      "glob": "Finding files",
+      "grep": "Searching code",
+      "bash": "Running command",
+      "write": "Writing file",
+      "edit": "Editing file",
+      "task": "Running agent",
+      "webFetch": "Fetching web page",
+      "webSearch": "Searching web"
+    }
+  },
+  "settings": {
+    "title": "Settings",
+    "model": {
+      "title": "Model",
+      "tabs": {
+        "cloud": "Cloud Providers",
+        "local": "Local Models",
+        "proxy": "Proxy Platforms"
+      },
+      "cloud": {
+        "description": "Select a cloud AI model. Requires an API key for the provider.",
+        "selectModel": "Select a model...",
+        "noApiKey": "No API key",
+        "noApiKeyWarning": "No API key configured for {{provider}}. Add one below.",
+        "modelUpdated": "Model updated to {{model}}"
+      },
+      "local": {
+        "description": "Connect to a local Ollama server to use models running on your machine.",
+        "serverUrl": "Ollama Server URL",
+        "test": "Test",
+        "testing": "Testing...",
+        "connected": "Connected - {{count}} model available",
+        "connected_plural": "Connected - {{count}} models available",
+        "selectModel": "Select Model",
+        "useThisModel": "Use This Model",
+        "saving": "Saving...",
+        "helpText": "Make sure Ollama is installed and running, then click Test to connect.",
+        "currentlyUsing": "Currently using: {{model}}"
+      },
+      "proxy": {
+        "description": "Connect through proxy platforms to access multiple AI providers with a single API key.",
+        "openrouter": {
+          "title": "OpenRouter",
+          "subtitle": "200+ models",
+          "description": "Enter your OpenRouter API key to access 200+ models from multiple providers.",
+          "apiKey": "OpenRouter API Key",
+          "saveAndFetch": "Save API Key & Fetch Models",
+          "validating": "Validating...",
+          "getApiKey": "Get your API key at",
+          "apiKeyConfigured": "API key configured",
+          "fetchModels": "Fetch Models",
+          "fetching": "Fetching...",
+          "refresh": "Refresh",
+          "searchModels": "Search models..."
+        },
+        "litellm": {
+          "title": "LiteLLM",
+          "subtitle": "Self-hosted proxy",
+          "description": "Connect to your LiteLLM proxy to access multiple providers through a unified interface.",
+          "proxyUrl": "LiteLLM Proxy URL",
+          "apiKey": "API Key (Optional)",
+          "apiKeyPlaceholder": "sk-... (leave empty if not required)",
+          "testConnection": "Test Connection",
+          "connecting": "Connecting...",
+          "learnMore": "Learn more at",
+          "connected": "Connected to {{url}}",
+          "disconnect": "Disconnect",
+          "searchModels": "Search models..."
+        },
+        "useThisModel": "Use This Model",
+        "saving": "Saving...",
+        "currentlyUsing": "Currently using: {{model}}"
+      }
+    },
+    "apiKey": {
+      "title": "Bring Your Own Model/API Key",
+      "description": "Setup the API key and model for your own AI coworker.",
+      "provider": "Provider",
+      "apiKeyLabel": "{{provider}} API Key",
+      "saveApiKey": "Save API Key",
+      "saving": "Saving...",
+      "savedKeys": "Saved Keys",
+      "removeApiKey": "Remove API key",
+      "confirmDelete": "Are you sure?",
+      "yes": "Yes",
+      "no": "No",
+      "bedrock": {
+        "accessKeys": "Access Keys",
+        "awsProfile": "AWS Profile",
+        "accessKeyId": "Access Key ID",
+        "secretAccessKey": "Secret Access Key",
+        "sessionToken": "Session Token",
+        "sessionTokenOptional": "(Optional)",
+        "sessionTokenPlaceholder": "For temporary credentials (STS)",
+        "profileName": "Profile Name",
+        "region": "Region",
+        "saveCredentials": "Save Bedrock Credentials",
+        "validating": "Validating...",
+        "savedSuccessfully": "Amazon Bedrock credentials saved successfully."
+      }
+    },
+    "developer": {
+      "title": "Developer",
+      "debugMode": "Debug Mode",
+      "debugDescription": "Show detailed backend logs including Claude CLI commands, flags, and stdout/stderr output in the task view.",
+      "debugEnabled": "Debug mode is enabled. Backend logs will appear in the task view when running tasks."
+    },
+    "about": {
+      "title": "About",
+      "version": "Version {{version}}",
+      "description": "Openwork is a local computer-use AI agent for your Mac that reads your files, creates documents, and automates repetitive knowledge work—all open-source with your AI models of choice.",
+      "feedback": "Any questions or feedback? Click here to contact us."
+    },
+    "language": {
+      "title": "Language",
+      "description": "Select your preferred language",
+      "english": "English",
+      "chinese": "中文（简体）"
+    }
+  }
+}

@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import { motion, AnimatePresence } from 'framer-motion';
 import TaskInputBar from '../components/landing/TaskInputBar';
 import SettingsDialog from '../components/layout/SettingsDialog';
@@ -80,12 +81,72 @@ const USE_CASE_EXAMPLES = [
 ];
 
 export default function HomePage() {
+  const { t } = useTranslation();
   const [prompt, setPrompt] = useState('');
+  const [workingDirectory, setWorkingDirectory] = useState<string | null>(null);
   const [showExamples, setShowExamples] = useState(true);
   const [showSettingsDialog, setShowSettingsDialog] = useState(false);
   const { startTask, isLoading, addTaskUpdate, setPermissionRequest } = useTaskStore();
   const navigate = useNavigate();
   const accomplish = getAccomplish();
+
+  // Use translated examples
+  const USE_CASE_EXAMPLES = [
+    {
+      title: t('home.examples.calendarPrep.title'),
+      description: t('home.examples.calendarPrep.description'),
+      prompt: t('home.examples.calendarPrep.prompt'),
+      image: calendarPrepNotesImg,
+    },
+    {
+      title: t('home.examples.inboxCleanup.title'),
+      description: t('home.examples.inboxCleanup.description'),
+      prompt: t('home.examples.inboxCleanup.prompt'),
+      image: inboxPromoCleanupImg,
+    },
+    {
+      title: t('home.examples.competitorPricing.title'),
+      description: t('home.examples.competitorPricing.description'),
+      prompt: t('home.examples.competitorPricing.prompt'),
+      image: competitorPricingDeckImg,
+    },
+    {
+      title: t('home.examples.notionAudit.title'),
+      description: t('home.examples.notionAudit.description'),
+      prompt: t('home.examples.notionAudit.prompt'),
+      image: notionApiAuditImg,
+    },
+    {
+      title: t('home.examples.stagingVsProd.title'),
+      description: t('home.examples.stagingVsProd.description'),
+      prompt: t('home.examples.stagingVsProd.prompt'),
+      image: stagingVsProdVisualImg,
+    },
+    {
+      title: t('home.examples.brokenLinks.title'),
+      description: t('home.examples.brokenLinks.description'),
+      prompt: t('home.examples.brokenLinks.prompt'),
+      image: prodBrokenLinksImg,
+    },
+    {
+      title: t('home.examples.portfolioMonitoring.title'),
+      description: t('home.examples.portfolioMonitoring.description'),
+      prompt: t('home.examples.portfolioMonitoring.prompt'),
+      image: stockPortfolioAlertsImg,
+    },
+    {
+      title: t('home.examples.jobApplication.title'),
+      description: t('home.examples.jobApplication.description'),
+      prompt: t('home.examples.jobApplication.prompt'),
+      image: jobApplicationAutomationImg,
+    },
+    {
+      title: t('home.examples.eventCalendar.title'),
+      description: t('home.examples.eventCalendar.description'),
+      prompt: t('home.examples.eventCalendar.prompt'),
+      image: eventCalendarBuilderImg,
+    },
+  ];
 
   // Subscribe to task events
   useEffect(() => {
@@ -107,11 +168,15 @@ export default function HomePage() {
     if (!prompt.trim() || isLoading) return;
 
     const taskId = `task_${Date.now()}`;
-    const task = await startTask({ prompt: prompt.trim(), taskId });
+    const task = await startTask({
+      prompt: prompt.trim(),
+      taskId,
+      workingDirectory: workingDirectory || undefined,
+    });
     if (task) {
       navigate(`/execution/${task.id}`);
     }
-  }, [prompt, isLoading, startTask, navigate]);
+  }, [prompt, workingDirectory, isLoading, startTask, navigate]);
 
   const handleSubmit = async () => {
     if (!prompt.trim() || isLoading) return;
@@ -165,7 +230,7 @@ export default function HomePage() {
           transition={springs.gentle}
           className="text-4xl font-light tracking-tight text-foreground"
         >
-          What will you accomplish today?
+          {t('home.title')}
         </motion.h1>
 
         <motion.div
@@ -182,7 +247,9 @@ export default function HomePage() {
                 onChange={setPrompt}
                 onSubmit={handleSubmit}
                 isLoading={isLoading}
-                placeholder="Describe a task and let AI handle the rest"
+                placeholder={t('home.placeholder')}
+                workingDirectory={workingDirectory}
+                onWorkingDirectoryChange={setWorkingDirectory}
                 large={true}
                 autoFocus={true}
               />
@@ -194,7 +261,7 @@ export default function HomePage() {
                 onClick={() => setShowExamples(!showExamples)}
                 className="w-full px-6 py-3 flex items-center justify-between text-sm text-muted-foreground hover:text-foreground hover:bg-muted/50 transition-colors duration-200"
               >
-                <span>Example prompts</span>
+                <span>{t('home.examples.title')}</span>
                 <motion.div
                   animate={{ rotate: showExamples ? 180 : 0 }}
                   transition={{ duration: 0.2 }}

@@ -17,6 +17,10 @@ const accomplishAPI = {
   openExternal: (url: string): Promise<void> =>
     ipcRenderer.invoke('shell:open-external', url),
 
+  // Dialog
+  selectDirectory: (): Promise<string | null> =>
+    ipcRenderer.invoke('dialog:select-directory'),
+
   // Task operations
   startTask: (config: { description: string }): Promise<unknown> =>
     ipcRenderer.invoke('task:start', config),

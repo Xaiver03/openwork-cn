@@ -27,6 +27,9 @@ interface AccomplishAPI {
   // Shell
   openExternal(url: string): Promise<void>;
 
+  // Dialog
+  selectDirectory(): Promise<string | null>;
+
   // Task operations
   startTask(config: TaskConfig): Promise<Task>;
   cancelTask(taskId: string): Promise<void>;

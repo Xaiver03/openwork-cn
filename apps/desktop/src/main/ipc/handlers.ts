@@ -1,4 +1,4 @@
-import { ipcMain, BrowserWindow, shell, app } from 'electron';
+import { ipcMain, BrowserWindow, shell, app, dialog } from 'electron';
 import type { IpcMainInvokeEvent } from 'electron';
 import { URL } from 'url';
 import {
@@ -1476,6 +1476,26 @@ export function registerIPCHandlers(): void {
       console.error('Failed to open external URL:', error);
       throw error;
     }
+  });
+
+  // Dialog: Select working directory
+  handle('dialog:select-directory', async (_event: IpcMainInvokeEvent) => {
+    const mainWindow = BrowserWindow.getFocusedWindow() || BrowserWindow.getAllWindows()[0];
+    if (!mainWindow) {
+      throw new Error('No window available for dialog');
+    }
+
+    const result = await dialog.showOpenDialog(mainWindow, {
+      properties: ['openDirectory', 'createDirectory'],
+      title: 'Select Working Directory',
+      buttonLabel: 'Select',
+    });
+
+    if (result.canceled || result.filePaths.length === 0) {
+      return null;
+    }
+
+    return result.filePaths[0];
   });
 
   // Log event handler - now just returns ok (no external logging)

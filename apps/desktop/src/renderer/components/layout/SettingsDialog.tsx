@@ -829,7 +829,7 @@ export default function SettingsDialog({ open, onOpenChange, onApiKeySaved }: Se
                   {/* Help text when not connected */}
                   {!ollamaConnected && !ollamaError && (
                     <p className="text-sm text-muted-foreground">
-                      Make sure{' '}
+                      {t('settings.model.local.helpText').split('Ollama')[0]}
                       <a
                         href="https://ollama.ai"
                         target="_blank"
@@ -837,8 +837,8 @@ export default function SettingsDialog({ open, onOpenChange, onApiKeySaved }: Se
                         className="text-primary hover:underline"
                       >
                         Ollama
-                      </a>{' '}
-                      is installed and running, then click Test to connect.
+                      </a>
+                      {t('settings.model.local.helpText').split('Ollama')[1]}
                     </p>
                   )}
 
@@ -846,8 +846,7 @@ export default function SettingsDialog({ open, onOpenChange, onApiKeySaved }: Se
                   {selectedModel?.provider === 'ollama' && (
                     <div className="mt-4 rounded-lg bg-muted p-3">
                       <p className="text-sm text-foreground">
-                        <span className="font-medium">Currently using:</span>{' '}
-                        {selectedModel.model.replace('ollama/', '')}
+                        <span className="font-medium">{t('settings.model.local.currentlyUsing', { model: selectedModel.model.replace('ollama/', '') })}</span>
                       </p>
                     </div>
                   )}
@@ -857,7 +856,7 @@ export default function SettingsDialog({ open, onOpenChange, onApiKeySaved }: Se
               {activeTab === 'proxy' && (
                 <>
                   <p className="mb-4 text-sm text-muted-foreground leading-relaxed">
-                    Connect through proxy platforms to access multiple AI providers with a single API key.
+                    {t('settings.model.proxy.description')}
                   </p>
 
                   {/* Platform Selector */}
@@ -870,8 +869,8 @@ export default function SettingsDialog({ open, onOpenChange, onApiKeySaved }: Se
                           : 'border-border hover:border-ring'
                       }`}
                     >
-                      <div className="font-medium text-foreground">OpenRouter</div>
-                      <div className="text-xs text-muted-foreground mt-1">200+ models</div>
+                      <div className="font-medium text-foreground">{t('settings.model.proxy.openrouter.title')}</div>
+                      <div className="text-xs text-muted-foreground mt-1">{t('settings.model.proxy.openrouter.subtitle')}</div>
                     </button>
                     <button
                       onClick={() => setSelectedProxyPlatform('litellm')}
@@ -881,8 +880,8 @@ export default function SettingsDialog({ open, onOpenChange, onApiKeySaved }: Se
                           : 'border-border hover:border-ring'
                       }`}
                     >
-                      <div className="font-medium text-foreground">LiteLLM</div>
-                      <div className="text-xs text-muted-foreground mt-1">Self-hosted proxy</div>
+                      <div className="font-medium text-foreground">{t('settings.model.proxy.litellm.title')}</div>
+                      <div className="text-xs text-muted-foreground mt-1">{t('settings.model.proxy.litellm.subtitle')}</div>
                     </button>
                   </div>
 
@@ -891,11 +890,11 @@ export default function SettingsDialog({ open, onOpenChange, onApiKeySaved }: Se
                       {!hasOpenRouterKey ? (
                         <div className="space-y-4">
                           <p className="text-sm text-muted-foreground">
-                            Enter your OpenRouter API key to access 200+ models from multiple providers.
+                            {t('settings.model.proxy.openrouter.description')}
                           </p>
                           <div>
                             <label className="mb-2 block text-sm font-medium text-foreground">
-                              OpenRouter API Key
+                              {t('settings.model.proxy.openrouter.apiKey')}
                             </label>
                             <input
                               type="password"
@@ -916,10 +915,10 @@ export default function SettingsDialog({ open, onOpenChange, onApiKeySaved }: Se
                             disabled={savingOpenrouterApiKey || !openrouterApiKey.trim()}
                             className="w-full rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground hover:bg-primary/90 disabled:opacity-50"
                           >
-                            {savingOpenrouterApiKey ? 'Validating...' : 'Save API Key & Fetch Models'}
+                            {savingOpenrouterApiKey ? t('settings.model.proxy.openrouter.validating') : t('settings.model.proxy.openrouter.saveAndFetch')}
                           </button>
                           <p className="text-xs text-muted-foreground">
-                            Get your API key at{' '}
+                            {t('settings.model.proxy.openrouter.getApiKey')}{' '}
                             <a
                               href="https://openrouter.ai/keys"
                               target="_blank"
@@ -938,14 +937,14 @@ export default function SettingsDialog({ open, onOpenChange, onApiKeySaved }: Se
                               <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
                               </svg>
-                              API key configured
+                              {t('settings.model.proxy.openrouter.apiKeyConfigured')}
                             </div>
                             <button
                               onClick={handleFetchOpenRouterModels}
                               disabled={openrouterLoading}
                               className="rounded-md bg-muted px-4 py-2 text-sm font-medium hover:bg-muted/80 disabled:opacity-50"
                             >
-                              {openrouterLoading ? 'Fetching...' : openrouterModels.length > 0 ? 'Refresh' : 'Fetch Models'}
+                              {openrouterLoading ? t('settings.model.proxy.openrouter.fetching') : openrouterModels.length > 0 ? t('settings.model.proxy.openrouter.refresh') : t('settings.model.proxy.openrouter.fetchModels')}
                             </button>
                           </div>
 
@@ -966,7 +965,7 @@ export default function SettingsDialog({ open, onOpenChange, onApiKeySaved }: Se
                                   type="text"
                                   value={openrouterSearch}
                                   onChange={(e) => setOpenrouterSearch(e.target.value)}
-                                  placeholder="Search models..."
+                                  placeholder={t('settings.model.proxy.openrouter.searchModels')}
                                   className="w-full rounded-md border border-input bg-background px-3 py-2 text-sm"
                                 />
                               </div>
@@ -1025,7 +1024,7 @@ export default function SettingsDialog({ open, onOpenChange, onApiKeySaved }: Se
                                 disabled={savingOpenrouter || !selectedOpenrouterModel}
                                 className="w-full rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground hover:bg-primary/90 disabled:opacity-50"
                               >
-                                {savingOpenrouter ? 'Saving...' : 'Use This Model'}
+                                {savingOpenrouter ? t('settings.model.proxy.saving') : t('settings.model.proxy.useThisModel')}
                               </button>
                             </>
                           )}
@@ -1034,8 +1033,7 @@ export default function SettingsDialog({ open, onOpenChange, onApiKeySaved }: Se
                           {selectedModel?.provider === 'openrouter' && (
                             <div className="mt-4 rounded-lg bg-muted p-3">
                               <p className="text-sm text-foreground">
-                                <span className="font-medium">Currently using:</span>{' '}
-                                {selectedModel.model.replace('openrouter/', '')}
+                                <span className="font-medium">{t('settings.model.proxy.currentlyUsing', { model: selectedModel.model.replace('openrouter/', '') })}</span>
                               </p>
                             </div>
                           )}
@@ -1049,11 +1047,11 @@ export default function SettingsDialog({ open, onOpenChange, onApiKeySaved }: Se
                       {!litellmConnected ? (
                         <div className="space-y-4">
                           <p className="text-sm text-muted-foreground">
-                            Connect to your LiteLLM proxy to access multiple providers through a unified interface.
+                            {t('settings.model.proxy.litellm.description')}
                           </p>
                           <div>
                             <label className="mb-1.5 block text-sm font-medium text-foreground">
-                              LiteLLM Proxy URL
+                              {t('settings.model.proxy.litellm.proxyUrl')}
                             </label>
                             <input
                               type="url"
@@ -1066,13 +1064,13 @@ export default function SettingsDialog({ open, onOpenChange, onApiKeySaved }: Se
                           </div>
                           <div>
                             <label className="mb-1.5 block text-sm font-medium text-foreground">
-                              API Key (Optional)
+                              {t('settings.model.proxy.litellm.apiKey')}
                             </label>
                             <input
                               type="password"
                               value={litellmApiKey}
                               onChange={(e) => setLitellmApiKey(e.target.value)}
-                              placeholder="sk-... (leave empty if not required)"
+                              placeholder={t('settings.model.proxy.litellm.apiKeyPlaceholder')}
                               className="w-full rounded-md border border-input bg-background px-3 py-2 text-sm text-foreground placeholder:text-muted-foreground focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary"
                               data-testid="litellm-api-key-input"
                             />
@@ -1086,10 +1084,10 @@ export default function SettingsDialog({ open, onOpenChange, onApiKeySaved }: Se
                             className="w-full rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground hover:bg-primary/90 disabled:opacity-50"
                             data-testid="litellm-test-button"
                           >
-                            {testingLitellm ? 'Connecting...' : 'Test Connection'}
+                            {testingLitellm ? t('settings.model.proxy.litellm.connecting') : t('settings.model.proxy.litellm.testConnection')}
                           </button>
                           <p className="text-xs text-muted-foreground">
-                            Learn more at{' '}
+                            {t('settings.model.proxy.litellm.learnMore')}{' '}
                             <a
                               href="https://docs.litellm.ai/docs/"
                               target="_blank"
@@ -1108,7 +1106,7 @@ export default function SettingsDialog({ open, onOpenChange, onApiKeySaved }: Se
                               <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
                               </svg>
-                              Connected to {litellmUrl}
+                              {t('settings.model.proxy.litellm.connected', { url: litellmUrl })}
                             </div>
                             <button
                               onClick={() => {
@@ -1118,7 +1116,7 @@ export default function SettingsDialog({ open, onOpenChange, onApiKeySaved }: Se
                               }}
                               className="text-xs text-muted-foreground hover:text-foreground"
                             >
-                              Disconnect
+                              {t('settings.model.proxy.litellm.disconnect')}
                             </button>
                           </div>
 
@@ -1128,7 +1126,7 @@ export default function SettingsDialog({ open, onOpenChange, onApiKeySaved }: Se
                               type="text"
                               value={litellmSearch}
                               onChange={(e) => setLitellmSearch(e.target.value)}
-                              placeholder="Search models..."
+                              placeholder={t('settings.model.proxy.litellm.searchModels')}
                               className="w-full rounded-md border border-input bg-background px-3 py-2 text-sm text-foreground placeholder:text-muted-foreground focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary"
                               data-testid="litellm-search-input"
                             />
@@ -1192,7 +1190,7 @@ export default function SettingsDialog({ open, onOpenChange, onApiKeySaved }: Se
                                 className="mt-4 w-full rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground hover:bg-primary/90 disabled:opacity-50"
                                 data-testid="litellm-save-button"
                               >
-                                {savingLitellm ? 'Saving...' : 'Use This Model'}
+                                {savingLitellm ? t('settings.model.proxy.saving') : t('settings.model.proxy.useThisModel')}
                               </button>
                             </>
                           )}
@@ -1201,8 +1199,7 @@ export default function SettingsDialog({ open, onOpenChange, onApiKeySaved }: Se
                           {selectedModel?.provider === 'litellm' && (
                             <div className="mt-4 rounded-lg bg-muted p-3">
                               <p className="text-sm text-foreground">
-                                <span className="font-medium">Currently using:</span>{' '}
-                                {selectedModel.model.replace('litellm/', '')}
+                                <span className="font-medium">{t('settings.model.proxy.currentlyUsing', { model: selectedModel.model.replace('litellm/', '') })}</span>
                               </p>
                             </div>
                           )}
@@ -1218,16 +1215,16 @@ export default function SettingsDialog({ open, onOpenChange, onApiKeySaved }: Se
           {/* API Key Section - Only show for cloud providers */}
           {activeTab === 'cloud' && (
             <section>
-              <h2 className="mb-4 text-base font-medium text-foreground">Bring Your Own Model/API Key</h2>
+              <h2 className="mb-4 text-base font-medium text-foreground">{t('settings.apiKey.title')}</h2>
               <div className="rounded-lg border border-border bg-card p-5">
                 <p className="mb-5 text-sm text-muted-foreground leading-relaxed">
-                  Setup the API key and model for your own AI coworker.
+                  {t('settings.apiKey.description')}
                 </p>
 
                 {/* Provider Selection */}
                 <div className="mb-5">
                   <label className="mb-2.5 block text-sm font-medium text-foreground">
-                    Provider
+                    {t('settings.apiKey.provider')}
                   </label>
                   <div className="grid grid-cols-2 gap-3">
                     {API_KEY_PROVIDERS.map((p) => (
@@ -1260,7 +1257,7 @@ export default function SettingsDialog({ open, onOpenChange, onApiKeySaved }: Se
                             : 'bg-muted text-muted-foreground hover:text-foreground'
                           }`}
                       >
-                        Access Keys
+                        {t('settings.apiKey.bedrock.accessKeys')}
                       </button>
                       <button
                         onClick={() => setBedrockAuthTab('profile')}
@@ -1269,7 +1266,7 @@ export default function SettingsDialog({ open, onOpenChange, onApiKeySaved }: Se
                             : 'bg-muted text-muted-foreground hover:text-foreground'
                           }`}
                       >
-                        AWS Profile
+                        {t('settings.apiKey.bedrock.awsProfile')}
                       </button>
                     </div>
 
@@ -1277,7 +1274,7 @@ export default function SettingsDialog({ open, onOpenChange, onApiKeySaved }: Se
                       <>
                         <div className="mb-4">
                           <label className="mb-2.5 block text-sm font-medium text-foreground">
-                            Access Key ID
+                            {t('settings.apiKey.bedrock.accessKeyId')}
                           </label>
                           <input
                             data-testid="bedrock-access-key-input"
@@ -1290,7 +1287,7 @@ export default function SettingsDialog({ open, onOpenChange, onApiKeySaved }: Se
                         </div>
                         <div className="mb-4">
                           <label className="mb-2.5 block text-sm font-medium text-foreground">
-                            Secret Access Key
+                            {t('settings.apiKey.bedrock.secretAccessKey')}
                           </label>
                           <input
                             data-testid="bedrock-secret-key-input"
@@ -1303,14 +1300,14 @@ export default function SettingsDialog({ open, onOpenChange, onApiKeySaved }: Se
                         </div>
                         <div className="mb-4">
                           <label className="mb-2.5 block text-sm font-medium text-foreground">
-                            Session Token <span className="text-muted-foreground">(Optional)</span>
+                            {t('settings.apiKey.bedrock.sessionToken')} <span className="text-muted-foreground">{t('settings.apiKey.bedrock.sessionTokenOptional')}</span>
                           </label>
                           <input
                             data-testid="bedrock-session-token-input"
                             type="password"
                             value={bedrockSessionToken}
                             onChange={(e) => setBedrockSessionToken(e.target.value)}
-                            placeholder="For temporary credentials (STS)"
+                            placeholder={t('settings.apiKey.bedrock.sessionTokenPlaceholder')}
                             className="w-full rounded-md border border-input bg-background px-3 py-2 text-sm"
                           />
                         </div>
@@ -1318,7 +1315,7 @@ export default function SettingsDialog({ open, onOpenChange, onApiKeySaved }: Se
                     ) : (
                       <div className="mb-4">
                         <label className="mb-2.5 block text-sm font-medium text-foreground">
-                          Profile Name
+                          {t('settings.apiKey.bedrock.profileName')}
                         </label>
                         <input
                           data-testid="bedrock-profile-input"
@@ -1333,7 +1330,7 @@ export default function SettingsDialog({ open, onOpenChange, onApiKeySaved }: Se
 
                     <div className="mb-4">
                       <label className="mb-2.5 block text-sm font-medium text-foreground">
-                        Region
+                        {t('settings.apiKey.bedrock.region')}
                       </label>
                       <input
                         data-testid="bedrock-region-input"
@@ -1354,7 +1351,7 @@ export default function SettingsDialog({ open, onOpenChange, onApiKeySaved }: Se
                       onClick={handleSaveBedrockCredentials}
                       disabled={savingBedrock}
                     >
-                      {savingBedrock ? 'Validating...' : 'Save Bedrock Credentials'}
+                      {savingBedrock ? t('settings.apiKey.bedrock.validating') : t('settings.apiKey.bedrock.saveCredentials')}
                     </button>
                   </div>
                 )}
@@ -1363,7 +1360,7 @@ export default function SettingsDialog({ open, onOpenChange, onApiKeySaved }: Se
                 {provider !== 'bedrock' && (
                   <div className="mb-5">
                     <label className="mb-2.5 block text-sm font-medium text-foreground">
-                      {API_KEY_PROVIDERS.find((p) => p.id === provider)?.name} API Key
+                      {t('settings.apiKey.apiKeyLabel', { provider: API_KEY_PROVIDERS.find((p) => p.id === provider)?.name })}
                     </label>
                     <input
                       data-testid="settings-api-key-input"
@@ -1392,7 +1389,7 @@ export default function SettingsDialog({ open, onOpenChange, onApiKeySaved }: Se
                     onClick={handleSaveApiKey}
                     disabled={isSaving}
                   >
-                    {isSaving ? 'Saving...' : 'Save API Key'}
+                    {isSaving ? t('settings.apiKey.saving') : t('settings.apiKey.saveApiKey')}
                   </button>
                 )}
 
@@ -1404,7 +1401,7 @@ export default function SettingsDialog({ open, onOpenChange, onApiKeySaved }: Se
                   </div>
                 ) : savedKeys.length > 0 && (
                   <div className="mt-6">
-                    <h3 className="mb-3 text-sm font-medium text-foreground">Saved Keys</h3>
+                    <h3 className="mb-3 text-sm font-medium text-foreground">{t('settings.apiKey.savedKeys')}</h3>
                     <div className="space-y-2">
                       {savedKeys.map((key) => {
                         const providerConfig = API_KEY_PROVIDERS.find((p) => p.id === key.provider);
@@ -1430,7 +1427,7 @@ export default function SettingsDialog({ open, onOpenChange, onApiKeySaved }: Se
                             </div>
                             {keyToDelete === key.id ? (
                               <div className="flex items-center gap-2">
-                                <span className="text-xs text-muted-foreground">Are you sure?</span>
+                                <span className="text-xs text-muted-foreground">{t('settings.apiKey.confirmDelete')}</span>
                                 <button
                                   onClick={() => {
                                     handleDeleteApiKey(key.id, key.provider);
@@ -1438,20 +1435,20 @@ export default function SettingsDialog({ open, onOpenChange, onApiKeySaved }: Se
                                   }}
                                   className="rounded px-2 py-1 text-xs font-medium bg-destructive text-destructive-foreground hover:bg-destructive/90 transition-colors"
                                 >
-                                  Yes
+                                  {t('settings.apiKey.yes')}
                                 </button>
                                 <button
                                   onClick={() => setKeyToDelete(null)}
                                   className="rounded px-2 py-1 text-xs font-medium bg-muted text-muted-foreground hover:bg-muted/80 transition-colors"
                                 >
-                                  No
+                                  {t('settings.apiKey.no')}
                                 </button>
                               </div>
                             ) : (
                               <button
                                 onClick={() => setKeyToDelete(key.id)}
                                 className="rounded-lg p-2 text-muted-foreground hover:bg-destructive/10 hover:text-destructive transition-colors duration-200 ease-accomplish"
-                                title="Remove API key"
+                                title={t('settings.apiKey.removeApiKey')}
                               >
                                 <Trash2 className="h-4 w-4" />
                               </button>
@@ -1468,14 +1465,13 @@ export default function SettingsDialog({ open, onOpenChange, onApiKeySaved }: Se
 
           {/* Developer Section */}
           <section>
-            <h2 className="mb-4 text-base font-medium text-foreground">Developer</h2>
+            <h2 className="mb-4 text-base font-medium text-foreground">{t('settings.developer.title')}</h2>
             <div className="rounded-lg border border-border bg-card p-5">
               <div className="flex items-center justify-between">
                 <div className="flex-1">
-                  <div className="font-medium text-foreground">Debug Mode</div>
+                  <div className="font-medium text-foreground">{t('settings.developer.debugMode')}</div>
                   <p className="mt-1.5 text-sm text-muted-foreground leading-relaxed">
-                    Show detailed backend logs including Claude CLI commands, flags,
-                    and stdout/stderr output in the task view.
+                    {t('settings.developer.debugDescription')}
                   </p>
                 </div>
                 <div className="ml-4">
@@ -1499,8 +1495,7 @@ export default function SettingsDialog({ open, onOpenChange, onApiKeySaved }: Se
               {debugMode && (
                 <div className="mt-4 rounded-xl bg-warning/10 p-3.5">
                   <p className="text-sm text-warning">
-                    Debug mode is enabled. Backend logs will appear in the task view
-                    when running tasks.
+                    {t('settings.developer.debugEnabled')}
                   </p>
                 </div>
               )}
@@ -1541,7 +1536,7 @@ export default function SettingsDialog({ open, onOpenChange, onApiKeySaved }: Se
 
           {/* About Section */}
           <section>
-            <h2 className="mb-4 text-base font-medium text-foreground">About</h2>
+            <h2 className="mb-4 text-base font-medium text-foreground">{t('settings.about.title')}</h2>
             <div className="rounded-lg border border-border bg-card p-5">
               <div className="flex items-center gap-4">
                 <img
@@ -1551,14 +1546,14 @@ export default function SettingsDialog({ open, onOpenChange, onApiKeySaved }: Se
                 />
                 <div>
                   <div className="font-medium text-foreground">Openwork</div>
-                  <div className="text-sm text-muted-foreground">Version {appVersion || 'Error: unavailable'}</div>
+                  <div className="text-sm text-muted-foreground">{t('settings.about.version', { version: appVersion || 'Error: unavailable' })}</div>
                 </div>
               </div>
               <p className="mt-4 text-sm text-muted-foreground leading-relaxed">
-                Openwork is a local computer-use AI agent for your Mac that reads your files, creates documents, and automates repetitive knowledge work—all open-source with your AI models of choice.
+                {t('settings.about.description')}
               </p>
               <p className="mt-3 text-sm text-muted-foreground">
-                Any questions or feedback? <a href="mailto:openwork-support@accomplish.ai" className="text-primary hover:underline">Click here to contact us</a>.
+                {t('settings.about.feedback').split('Click here to contact us')[0]}<a href="mailto:openwork-support@accomplish.ai" className="text-primary hover:underline">Click here to contact us</a>.
               </p>
             </div>
           </section>

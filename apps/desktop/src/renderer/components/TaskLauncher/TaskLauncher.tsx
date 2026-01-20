@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useMemo, useCallback, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import { motion, AnimatePresence } from 'framer-motion';
 import * as DialogPrimitive from '@radix-ui/react-dialog';
 import { Search, Plus, X } from 'lucide-react';
@@ -12,6 +13,7 @@ import { springs } from '@/lib/animations';
 import TaskLauncherItem from './TaskLauncherItem';
 
 export default function TaskLauncher() {
+  const { t } = useTranslation();
   const navigate = useNavigate();
   const inputRef = useRef<HTMLInputElement>(null);
   const [searchQuery, setSearchQuery] = useState('');
@@ -147,11 +149,11 @@ export default function TaskLauncher() {
                     type="text"
                     value={searchQuery}
                     onChange={(e) => setSearchQuery(e.target.value)}
-                    placeholder="Search tasks..."
+                    placeholder={t('taskLauncher.searchPlaceholder')}
                     className="flex-1 bg-transparent text-sm outline-none placeholder:text-muted-foreground"
                   />
                   <DialogPrimitive.Close asChild>
-                    <button className="text-muted-foreground hover:text-foreground transition-colors" aria-label="Close">
+                    <button className="text-muted-foreground hover:text-foreground transition-colors" aria-label={t('taskLauncher.close')}>
                       <X className="h-4 w-4" />
                     </button>
                   </DialogPrimitive.Close>
@@ -171,7 +173,7 @@ export default function TaskLauncher() {
                     )}
                   >
                     <Plus className="h-4 w-4 shrink-0" />
-                    <span>New task</span>
+                    <span>{t('taskLauncher.newTask')}</span>
                     {searchQuery.trim() && (
                       <span className={cn(
                         'text-xs truncate',
@@ -186,7 +188,7 @@ export default function TaskLauncher() {
                   {filteredTasks.length > 0 && (
                     <>
                       <div className="px-3 py-2 text-xs font-medium text-muted-foreground">
-                        {searchQuery.trim() ? 'Results' : 'Last 7 days'}
+                        {searchQuery.trim() ? t('taskLauncher.results') : t('taskLauncher.last7Days')}
                       </div>
                       {filteredTasks.slice(0, 10).map((task, i) => (
                         <TaskLauncherItem
@@ -202,16 +204,16 @@ export default function TaskLauncher() {
                   {/* Empty State */}
                   {searchQuery.trim() && filteredTasks.length === 0 && (
                     <div className="px-3 py-4 text-sm text-muted-foreground text-center">
-                      No tasks found
+                      {t('taskLauncher.noTasksFound')}
                     </div>
                   )}
                 </div>
 
                 {/* Footer hint */}
                 <div className="px-4 py-2 border-t border-border text-xs text-muted-foreground flex items-center gap-4">
-                  <span><kbd className="px-1.5 py-0.5 bg-muted rounded text-[10px]">↑↓</kbd> Navigate</span>
-                  <span><kbd className="px-1.5 py-0.5 bg-muted rounded text-[10px]">↵</kbd> Select</span>
-                  <span><kbd className="px-1.5 py-0.5 bg-muted rounded text-[10px]">Esc</kbd> Close</span>
+                  <span><kbd className="px-1.5 py-0.5 bg-muted rounded text-[10px]">↑↓</kbd> {t('taskLauncher.navigate')}</span>
+                  <span><kbd className="px-1.5 py-0.5 bg-muted rounded text-[10px]">↵</kbd> {t('taskLauncher.select')}</span>
+                  <span><kbd className="px-1.5 py-0.5 bg-muted rounded text-[10px]">Esc</kbd> {t('taskLauncher.close')}</span>
                 </div>
               </motion.div>
             </DialogPrimitive.Content>

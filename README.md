@@ -18,9 +18,10 @@ Openwork 是一个开源的 AI 桌面助手，可以在你的本地机器上自�
 </p>
 
 <p align="center">
-  <a href="https://github.com/Xaiver03/openwork-cn/releases"><strong>下载 Openwork 中文版</strong></a>
+  <a href="https://github.com/Xaiver03/openwork-cn/releases/download/v0.2.3-cn/Openwork-0.2.3-mac-arm64.dmg"><img src="https://img.shields.io/badge/Download-DMG-0ea5e9?style=for-the-badge&logo=apple&logoSize=auto" alt="Download DMG" /></a>
+  <a href="https://github.com/Xaiver03/openwork-cn/releases"><strong>所有版本</strong></a>
   ·
-  <a href="README.md">English</a>
+  <a href="README.en.md">English</a>
   ·
   <a href="https://github.com/accomplish-ai/openwork">原项目</a>
 </p>
@@ -185,7 +186,11 @@ Openwork 在你的机器上本地运行。你的文件保存在你的设备上�
 
 <div align="center">
 
-[**下载 Mac 版本 (Apple Silicon)**](https://github.com/Xaiver03/openwork-cn/releases)
+[**⬇️ 下载 Openwork v0.2.3 DMG (224 MB)**](https://github.com/Xaiver03/openwork-cn/releases/download/v0.2.3-cn/Openwork-0.2.3-mac-arm64.dmg)
+
+[**📦 下载 ZIP 压缩包 (219 MB)**](https://github.com/Xaiver03/openwork-cn/releases/download/v0.2.3-cn/Openwork-0.2.3-mac-arm64.zip)
+
+[**📋 查看所有版本**](https://github.com/Xaiver03/openwork-cn/releases)
 
 </div>
 

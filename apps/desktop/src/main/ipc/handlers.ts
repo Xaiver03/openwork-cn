@@ -42,6 +42,8 @@ import {
   setOllamaConfig,
   getLiteLLMConfig,
   setLiteLLMConfig,
+  getLanguage,
+  setLanguage,
 } from '../store/appSettings';
 import { getDesktopConfig } from '../config';
 import {
@@ -1432,6 +1434,23 @@ export function registerIPCHandlers(): void {
   // Settings: Get all app settings
   handle('settings:app-settings', async (_event: IpcMainInvokeEvent) => {
     return getAppSettings();
+  });
+
+  // Settings: Get language setting
+  handle('settings:language', async (_event: IpcMainInvokeEvent) => {
+    return getLanguage();
+  });
+
+  // Settings: Set language setting
+  handle('settings:set-language', async (_event: IpcMainInvokeEvent, language: 'zh' | 'en') => {
+    if (language !== 'zh' && language !== 'en') {
+      throw new Error('Invalid language. Must be "zh" or "en"');
+    }
+    setLanguage(language);
+    // Broadcast the change to all renderer windows
+    for (const win of BrowserWindow.getAllWindows()) {
+      win.webContents.send('settings:language-changed', { language });
+    }
   });
 
   // Onboarding: Get onboarding complete status

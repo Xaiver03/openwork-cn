@@ -15,6 +15,8 @@ interface AppSettingsSchema {
   ollamaConfig: OllamaConfig | null;
   /** LiteLLM proxy configuration */
   litellmConfig: LiteLLMConfig | null;
+  /** Preferred language for AI assistant responses */
+  language: 'zh' | 'en';
 }
 
 const appSettingsStore = new Store<AppSettingsSchema>({
@@ -28,6 +30,7 @@ const appSettingsStore = new Store<AppSettingsSchema>({
     },
     ollamaConfig: null,
     litellmConfig: null,
+    language: 'zh',
   },
 });
 
@@ -102,6 +105,20 @@ export function setLiteLLMConfig(config: LiteLLMConfig | null): void {
 }
 
 /**
+ * Get language setting
+ */
+export function getLanguage(): 'zh' | 'en' {
+  return appSettingsStore.get('language');
+}
+
+/**
+ * Set language setting
+ */
+export function setLanguage(language: 'zh' | 'en'): void {
+  appSettingsStore.set('language', language);
+}
+
+/**
  * Get all app settings
  */
 export function getAppSettings(): AppSettingsSchema {
@@ -111,6 +128,7 @@ export function getAppSettings(): AppSettingsSchema {
     selectedModel: appSettingsStore.get('selectedModel'),
     ollamaConfig: appSettingsStore.get('ollamaConfig') ?? null,
     litellmConfig: appSettingsStore.get('litellmConfig') ?? null,
+    language: appSettingsStore.get('language'),
   };
 }
 

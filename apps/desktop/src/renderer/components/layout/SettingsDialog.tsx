@@ -121,6 +121,10 @@ export default function SettingsDialog({ open, onOpenChange, onApiKeySaved }: Se
   const [savingLitellm, setSavingLitellm] = useState(false);
   const [litellmSearch, setLitellmSearch] = useState('');
 
+  // Language state
+  const [language, setLanguageState] = useState<'zh' | 'en'>('zh');
+  const [loadingLanguage, setLoadingLanguage] = useState(true);
+
   // Sync selectedProxyPlatform and selected model radio button with the actual selected model
   useEffect(() => {
     if (selectedModel?.provider === 'litellm') {
@@ -243,6 +247,23 @@ export default function SettingsDialog({ open, onOpenChange, onApiKeySaved }: Se
       }
     };
 
+    const fetchLanguage = async () => {
+      try {
+        const lang = await accomplish.getLanguage();
+        setLanguageState(lang);
+        // Sync with i18n
+        if (lang === 'zh') {
+          i18n.changeLanguage('zh-CN');
+        } else {
+          i18n.changeLanguage('en');
+        }
+      } catch (err) {
+        console.error('Failed to fetch language:', err);
+      } finally {
+        setLoadingLanguage(false);
+      }
+    };
+
     fetchKeys();
     fetchDebugSetting();
     fetchVersion();
@@ -250,6 +271,7 @@ export default function SettingsDialog({ open, onOpenChange, onApiKeySaved }: Se
     fetchOllamaConfig();
     fetchBedrockCredentials();
     fetchLiteLLMConfig();
+    fetchLanguage();
   }, [open]);
 
   const handleDebugToggle = async () => {
@@ -614,6 +636,25 @@ export default function SettingsDialog({ open, onOpenChange, onApiKeySaved }: Se
       setLitellmError(err instanceof Error ? err.message : 'Failed to save');
     } finally {
       setSavingLitellm(false);
+    }
+  };
+
+  const handleLanguageChange = async (newLanguage: 'zh' | 'en') => {
+    const accomplish = getAccomplish();
+    setLanguageState(newLanguage);
+
+    // Change UI language
+    if (newLanguage === 'zh') {
+      i18n.changeLanguage('zh-CN');
+    } else {
+      i18n.changeLanguage('en');
+    }
+
+    // Save to backend
+    try {
+      await accomplish.setLanguage(newLanguage);
+    } catch (err) {
+      console.error('Failed to save language setting:', err);
     }
   };
 
@@ -1509,28 +1550,32 @@ export default function SettingsDialog({ open, onOpenChange, onApiKeySaved }: Se
               <p className="mb-4 text-sm text-muted-foreground leading-relaxed">
                 {t('settings.language.description')}
               </p>
-              <div className="grid grid-cols-2 gap-3">
-                <button
-                  onClick={() => i18n.changeLanguage('en')}
-                  className={`rounded-xl border p-4 text-center transition-all duration-200 ${
-                    i18n.language === 'en'
-                      ? 'border-primary bg-muted'
-                      : 'border-border hover:border-ring'
-                  }`}
-                >
-                  <div className="font-medium text-foreground">English</div>
-                </button>
-                <button
-                  onClick={() => i18n.changeLanguage('zh-CN')}
-                  className={`rounded-xl border p-4 text-center transition-all duration-200 ${
-                    i18n.language === 'zh-CN'
-                      ? 'border-primary bg-muted'
-                      : 'border-border hover:border-ring'
-                  }`}
-                >
-                  <div className="font-medium text-foreground">中文（简体）</div>
-                </button>
-              </div>
+              {loadingLanguage ? (
+                <div className="h-20 animate-pulse rounded-md bg-muted" />
+              ) : (
+                <div className="grid grid-cols-2 gap-3">
+                  <button
+                    onClick={() => handleLanguageChange('en')}
+                    className={`rounded-xl border p-4 text-center transition-all duration-200 ${
+                      language === 'en'
+                        ? 'border-primary bg-muted'
+                        : 'border-border hover:border-ring'
+                    }`}
+                  >
+                    <div className="font-medium text-foreground">English</div>
+                  </button>
+                  <button
+                    onClick={() => handleLanguageChange('zh')}
+                    className={`rounded-xl border p-4 text-center transition-all duration-200 ${
+                      language === 'zh'
+                        ? 'border-primary bg-muted'
+                        : 'border-border hover:border-ring'
+                    }`}
+                  >
+                    <div className="font-medium text-foreground">中文（简体）</div>
+                  </button>
+                </div>
+              )}
             </div>
           </section>
 

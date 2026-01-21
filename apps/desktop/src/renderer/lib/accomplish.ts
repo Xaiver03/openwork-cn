@@ -51,7 +51,9 @@ interface AccomplishAPI {
   removeApiKey(id: string): Promise<void>;
   getDebugMode(): Promise<boolean>;
   setDebugMode(enabled: boolean): Promise<void>;
-  getAppSettings(): Promise<{ debugMode: boolean; onboardingComplete: boolean }>;
+  getAppSettings(): Promise<{ debugMode: boolean; onboardingComplete: boolean; language: 'zh' | 'en' }>;
+  getLanguage(): Promise<'zh' | 'en'>;
+  setLanguage(language: 'zh' | 'en'): Promise<void>;
 
   // API Key management
   hasApiKey(): Promise<boolean>;

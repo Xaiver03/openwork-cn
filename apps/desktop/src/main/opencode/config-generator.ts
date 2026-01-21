@@ -421,9 +421,37 @@ export async function generateOpenCodeConfig(): Promise<string> {
     fs.mkdirSync(configDir, { recursive: true });
   }
 
+  // Get language setting and inject language instruction into system prompt
+  const { getLanguage } = await import('../store/appSettings');
+  const language = getLanguage();
+
+  let languageInstruction = '';
+  if (language === 'zh') {
+    languageInstruction = `<language>
+IMPORTANT: Always communicate in Chinese (Simplified Chinese).
+- All responses, explanations, and messages to the user must be in Chinese
+- All thinking processes and internal reasoning should be in Chinese
+- Technical terms and code identifiers should remain in their original form (English)
+- Error messages and logs should be translated to Chinese when communicating with users
+</language>
+
+`;
+  } else {
+    languageInstruction = `<language>
+IMPORTANT: Always communicate in English.
+- All responses, explanations, and messages to the user must be in English
+- All thinking processes and internal reasoning should be in English
+</language>
+
+`;
+  }
+
   // Get skills directory path and inject into system prompt
   const skillsPath = getSkillsPath();
-  const systemPrompt = ACCOMPLISH_SYSTEM_PROMPT_TEMPLATE.replace(/\{\{SKILLS_PATH\}\}/g, skillsPath);
+  let systemPrompt = ACCOMPLISH_SYSTEM_PROMPT_TEMPLATE.replace(/\{\{SKILLS_PATH\}\}/g, skillsPath);
+
+  // Insert language instruction after identity section
+  systemPrompt = systemPrompt.replace('</identity>\n\n', `</identity>\n\n${languageInstruction}`);
 
   // Get OpenCode config directory (parent of skills/) for OPENCODE_CONFIG_DIR
   const openCodeConfigDir = getOpenCodeConfigDir();

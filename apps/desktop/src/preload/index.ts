@@ -57,8 +57,12 @@ const accomplishAPI = {
     ipcRenderer.invoke('settings:debug-mode'),
   setDebugMode: (enabled: boolean): Promise<void> =>
     ipcRenderer.invoke('settings:set-debug-mode', enabled),
-  getAppSettings: (): Promise<{ debugMode: boolean; onboardingComplete: boolean }> =>
+  getAppSettings: (): Promise<{ debugMode: boolean; onboardingComplete: boolean; language: 'zh' | 'en' }> =>
     ipcRenderer.invoke('settings:app-settings'),
+  getLanguage: (): Promise<'zh' | 'en'> =>
+    ipcRenderer.invoke('settings:language'),
+  setLanguage: (language: 'zh' | 'en'): Promise<void> =>
+    ipcRenderer.invoke('settings:set-language', language),
 
   // API Key management (new simplified handlers)
   hasApiKey: (): Promise<boolean> =>
@@ -180,6 +184,12 @@ const accomplishAPI = {
     const listener = (_: unknown, data: { enabled: boolean }) => callback(data);
     ipcRenderer.on('settings:debug-mode-changed', listener);
     return () => ipcRenderer.removeListener('settings:debug-mode-changed', listener);
+  },
+  // Language setting changes
+  onLanguageChange: (callback: (data: { language: 'zh' | 'en' }) => void) => {
+    const listener = (_: unknown, data: { language: 'zh' | 'en' }) => callback(data);
+    ipcRenderer.on('settings:language-changed', listener);
+    return () => ipcRenderer.removeListener('settings:language-changed', listener);
   },
   // Task status changes (e.g., queued -> running)
   onTaskStatusChange: (callback: (data: { taskId: string; status: string }) => void) => {
